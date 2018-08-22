@@ -35,7 +35,7 @@ if (!is_null($events['events'])) //check ค่าในตัวแปร $even
             $source_type = $event['source']['type'];//เก็บที่มาของ event(user หรือ group)
             $txtin = $event['message']['text'];//เอาข้อความจากไลน์ใส่ตัวแปร $txtin
             $first_char = substr($txtin,0,1);//ตัดเอาเฉพาะตัวอักษรตัวแรก
-			if($first_char == "@")
+			if($first_char == "@" AND $source_type =="user")
 			{
 				$office_id = substr($txtin,1,3);///ได้รหัสการไฟฟ้า 
 				$sql_area = "SELECT * FROM tbl_tdd WHERE area = '".$office_id."'";
