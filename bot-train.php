@@ -35,6 +35,22 @@ if (!is_null($events['events'])) //check ค่าในตัวแปร $even
             $source_type = $event['source']['type'];//เก็บที่มาของ event(user หรือ group)
             $txtin = $event['message']['text'];//เอาข้อความจากไลน์ใส่ตัวแปร $txtin
             $first_char = substr($txtin,0,1);//ตัดเอาเฉพาะตัวอักษรตัวแรก
+			if($first_char == "@")
+			{
+				$office_id = substr($txtin,1,3);///ได้รหัสการไฟฟ้า 
+				$sql_area = "SELECT * FROM tbl_tdd WHERE area = '".$office_id."'";
+				$query_area = mysqli_query($conn,$sql_area);
+				$num_row = mysqli_num_rows($query_area);// นับจำนวนที่หาเจอ
+				$txtsend = "ค้นพบ ".$num_row." รายการ";
+				$a=1;
+				while($obj = mysqli_fetch_array($query_area))
+				{
+					$txtsend = $txtsend ."\n\n".$a.".".$obj["oper"]."\n".$obj["wbs"]."\n".$obj["name"];
+					$a = $a+1;
+				}
+				reply_msg($txtsend,$replyToken);//เรียกใช้ function
+				break;
+			}
          /*ลงทะเบียนกลุ่ม*/   
             if($first_char == "/" AND $source_type == "group" )//ถ้าตัวอักษรตัวแรกคือ /
             {
